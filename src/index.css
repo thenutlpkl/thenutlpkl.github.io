@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 230 25% 13%;
+    --foreground: 210 40% 98%;
+    --card: 229 27% 19%;
+    --card-foreground: 210 40% 98%;
+    --popover: 230 25% 13%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 24 98% 81%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 229 27% 19%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 229 27% 19%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 229 27% 19%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 229 27% 19%;
+    --input: 229 27% 19%;
+    --ring: 24 98% 81%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    cursor: none;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    background-image: 
+      radial-gradient(circle at 50% 0%, rgba(254, 198, 161, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 0% 50%, rgba(254, 198, 161, 0.05) 0%, transparent 50%);
+  }
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  width: 20px;
+  height: 20px;
+  background: rgba(254, 198, 161, 0.3);
+  border: 2px solid rgba(254, 198, 161, 0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+}
+
+.custom-cursor.hover {
+  width: 40px;
+  height: 40px;
+  background: rgba(254, 198, 161, 0.1);
+  border: 2px solid rgba(254, 198, 161, 0.3);
+}
+
+.custom-cursor.clicking {
+  width: 16px;
+  height: 16px;
+  background: rgba(254, 198, 161, 0.5);
+  border: 2px solid rgba(254, 198, 161, 0.8);
+}
+
+.gradient-card {
+  background: linear-gradient(135deg, rgba(254, 198, 161, 0.1) 0%, rgba(147, 39, 143, 0.1) 100%);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(254, 198, 161, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+.nav-link {
+  @apply text-sm font-medium transition-colors hover:text-[#FEC6A1] relative;
+  text-shadow: 0 0 10px rgba(254, 198, 161, 0.5);
+}
+
+.nav-link::after {
+  content: '';
+  @apply absolute left-0 bottom-0 w-0 h-[1px] bg-[#FEC6A1] transition-all duration-300;
+  box-shadow: 0 0 10px rgba(254, 198, 161, 0.5);
+}
+
+.nav-link:hover::after {
+  @apply w-full;
+}
+
+.nav-link.active {
+  @apply text-[#FEC6A1];
+}
+
+.hologram-glow {
+  @apply relative;
+}
+
+.hologram-glow::before {
+  content: '';
+  @apply absolute inset-0 rounded-3xl;
+  background: linear-gradient(45deg, transparent, rgba(254, 198, 161, 0.1), transparent);
+}
