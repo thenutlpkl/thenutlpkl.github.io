@@ -1,5 +1,5 @@
 // @ts-ignore
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../lib/supabaseClients';
 import { Project } from '../types/database.types';
@@ -25,8 +25,12 @@ const fetchProjects = async () => {
   return data || [];
 };
 
+interface WorksProps {
+  onLoadComplete?: () => void;
+}
+
 // Works component
-const Works = () => {
+const Works: React.FC<WorksProps> = ({ onLoadComplete }) => {
   const { 
     data: projects, 
     isLoading, 
@@ -43,6 +47,13 @@ const Works = () => {
     refetchOnReconnect: true,
     retry: 3,
   });
+
+  useEffect(() => {
+    // Call onLoadComplete when the component is fully loaded
+    if (onLoadComplete && !isLoading) {
+      onLoadComplete();
+    }
+  }, [onLoadComplete, isLoading]);
 
   if (isError) {
     console.error('Failed to fetch projects:', error);

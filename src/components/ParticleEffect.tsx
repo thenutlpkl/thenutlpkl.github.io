@@ -1,6 +1,14 @@
-import { useEffect, useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
-const ParticleEffect = () => {
+interface ParticleEffectProps {
+  color?: string;
+  count?: number;
+}
+
+const ParticleEffect: React.FC<ParticleEffectProps> = ({ 
+  color = 'rgba(173, 216, 230, 0.5)', // Explicit rgba for visibility
+  count = 75 
+}) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -26,30 +34,34 @@ const ParticleEffect = () => {
       speedX: number;
       speedY: number;
       opacity: number;
+      canvasWidth: number;
+      canvasHeight: number;
 
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = 0;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = (Math.random() - 0.5) * 2;
-        this.speedY = Math.random() * 3 + 1;
-        this.opacity = Math.random() * 0.5 + 0.1;
+      constructor(canvasWidth: number, canvasHeight: number) {
+        this.canvasWidth = canvasWidth;
+        this.canvasHeight = canvasHeight;
+        this.x = Math.random() * canvasWidth;
+        this.y = Math.random() * canvasHeight; // Start particles across the canvas
+        this.size = Math.random() * 2 + 0.5; // Smaller particles
+        this.speedX = (Math.random() - 0.5) * 0.5; // Slower horizontal movement
+        this.speedY = Math.random() * 0.5 - 0.25; // Gentle upward drift
+        this.opacity = Math.random() * 0.3 + 0.1; // More transparent
       }
 
       update() {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        if (this.y > canvas.height) {
-          this.y = 0;
-          this.x = Math.random() * canvas.width;
-        }
+        // Wrap around horizontally and vertically
+        if (this.x < 0) this.x = this.canvasWidth;
+        if (this.x > this.canvasWidth) this.x = 0;
+        if (this.y < 0) this.y = this.canvasHeight;
+        if (this.y > this.canvasHeight) this.y = 0;
       }
 
-      draw() {
-        if (!ctx) return;
+      draw(ctx: CanvasRenderingContext2D, color: string) {
+        ctx.fillStyle = color;
         ctx.beginPath();
-        ctx.fillStyle = `rgba(254, 198, 161, ${this.opacity})`;
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -57,19 +69,24 @@ const ParticleEffect = () => {
 
     // Create particle array
     const particles: Particle[] = [];
-    const particleCount = 50;
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
+    for (let i = 0; i < count; i++) {
+      particles.push(new Particle(canvas.width, canvas.height));
     }
 
     // Animation loop
     const animate = () => {
-      if (!ctx) return;
+      if (!canvas || !ctx) return;
+      
+      // Clear canvas completely
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Optional: Add a very subtle background
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
       particles.forEach(particle => {
         particle.update();
-        particle.draw();
+        particle.draw(ctx, color);
       });
 
       requestAnimationFrame(animate);
@@ -81,13 +98,13 @@ const ParticleEffect = () => {
     return () => {
       window.removeEventListener('resize', setCanvasSize);
     };
-  }, []);
+  }, [color, count]);
 
   return (
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none z-0"
-      style={{ opacity: 0.6 }}
+      style={{ opacity: 0.4 }}
     />
   );
 };

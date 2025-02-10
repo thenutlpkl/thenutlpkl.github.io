@@ -1,13 +1,23 @@
+import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 
-const HighlightText = ({ children }) => (
+interface HighlightTextProps {
+  children: React.ReactNode;
+}
+
+const HighlightText: React.FC<HighlightTextProps> = ({ children }) => (
   <span className="text-white font-normal">
     {children}
   </span>
 );
 
-const ContentSection = ({ title, children }) => {
+interface ContentSectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+const ContentSection: React.FC<ContentSectionProps> = ({ title, children }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, {
     once: true,
@@ -30,7 +40,12 @@ const ContentSection = ({ title, children }) => {
   );
 };
 
-const StoryTab = () => {
+interface StoryTabProps {
+  title?: string;
+  children?: React.ReactNode;
+}
+
+const StoryTab: React.FC<StoryTabProps> = () => {
   return (
     <div className="space-y-16 max-w-[500px] mx-auto">
       {/* Journey Beginning */}
@@ -87,21 +102,8 @@ const StoryTab = () => {
       {/* Current */}
       <ContentSection title="Currently">
         <p className="text-base text-gray-400 font-light leading-relaxed">
-          I recently returned from Canada after a challenging period of job hunting. 
-          I previously worked as a <HighlightText>Lead Product Designer at Invitrace Health</HighlightText>, 
-          where we shared a vision of <HighlightText>improving the healthcare system in Thailand</HighlightText>. 
-          I had the opportunity to manage a team of six talented designers across ten different projects.
-        </p>
-      </ContentSection>
-
-      {/* Contact */}
-      <ContentSection title="Contact & Social Media">
-        <p className="text-base text-gray-400 font-light leading-relaxed">
-          For partnerships, collaborations, sponsorships, commissions, or events, 
-          feel free to reach out to me on{' '}
-          <a href="#" className="text-[#FEC6A1] hover:underline">LinkedIn</a>. 
-          I'm always open to <HighlightText>connecting with like-minded professionals</HighlightText> and exploring 
-          new opportunities to create impactful products together.
+          Currently, I'm passionate about creating impactful digital experiences that bridge 
+          technology, design, and human needs.
         </p>
       </ContentSection>
     </div>

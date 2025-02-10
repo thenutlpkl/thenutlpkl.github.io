@@ -1,12 +1,17 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import StoryTab from './StoryTab';
+import React from 'react';
+import { motion } from 'framer-motion';
+import StoryTab from './StoryTab'; 
 import SkillTab from './SkillTab'; 
 import ExperienceTab from './ExperienceTab';
+
+interface TabContentProps {
+  activeTab: 'story' | 'skills' | 'experience';
+}
 
 const tabVariants = {
   enter: {
     opacity: 0,
-    y: 20,
+    y: 50,
   },
   center: {
     opacity: 1,
@@ -14,18 +19,18 @@ const tabVariants = {
   },
   exit: {
     opacity: 0,
-    y: -20,
+    y: -50,
   },
 };
 
-const TabContent = ({ activeTab }) => {
+const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
   const renderContent = () => {
     switch (activeTab) {
       case 'story':
         return <StoryTab />;
-      case 'skill':
+      case 'skills':
         return <SkillTab />;
-      case 'experiences':
+      case 'experience':
         return <ExperienceTab />;
       default:
         return null;
@@ -33,22 +38,15 @@ const TabContent = ({ activeTab }) => {
   };
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={activeTab}
-        variants={tabVariants}
-        initial="enter"
-        animate="center"
-        exit="exit"
-        transition={{
-          duration: 0.5,
-          ease: "easeInOut"
-        }}
-        className="w-full mt-12"
-      >
-        {renderContent()}
-      </motion.div>
-    </AnimatePresence>
+    <motion.div
+      variants={tabVariants}
+      initial="enter"
+      animate="center"
+      exit="exit"
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      {renderContent()}
+    </motion.div>
   );
 };
 

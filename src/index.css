@@ -80,16 +80,6 @@
   text-shadow: 0 0 10px rgba(254, 198, 161, 0.5);
 }
 
-.nav-link::after {
-  content: '';
-  @apply absolute left-0 bottom-0 w-0 h-[1px] bg-[#FEC6A1] transition-all duration-300;
-  box-shadow: 0 0 10px rgba(254, 198, 161, 0.5);
-}
-
-.nav-link:hover::after {
-  @apply w-full;
-}
-
 .nav-link.active {
   @apply text-[#FEC6A1];
 }

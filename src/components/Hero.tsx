@@ -14,6 +14,12 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
   const isInView = useInView(containerRef, { once: true });
 
   useEffect(() => {
+    if (onLoadComplete) {
+      onLoadComplete();
+    }
+  }, [onLoadComplete]);
+
+  useEffect(() => {
     if (isInView && onLoadComplete) {
       const timer = setTimeout(() => {
         onLoadComplete();
@@ -21,6 +27,12 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
       return () => clearTimeout(timer);
     }
   }, [isInView, onLoadComplete]);
+
+  useEffect(() => {
+    if (isInView) {
+      controls.start('visible');
+    }
+  }, [isInView, controls]);
 
   return (
     <motion.div
@@ -33,19 +45,22 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
         }
       }}
       initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
+      animate={controls}
       className="container mx-auto px-4 pt-32 pb-16"
     >
       <div className="max-w-3xl mx-auto text-center">
         <motion.div 
+          ref={textRef}
           variants={{
             hidden: { y: 20, opacity: 0 },
             visible: { 
               y: 0, 
               opacity: 1,
-              transition: { duration: 0.8, ease: "easeOut", delay: 0.2 }
+              transition: { duration: 0.6 }
             }
           }}
+          initial="hidden"
+          animate={controls}
           className="flex items-center justify-center space-x-4 mb-2"
         >
           <h1 className="text-4xl font-light">Hey,</h1>
@@ -74,6 +89,8 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
               transition: { duration: 0.8, ease: "easeOut", delay: 0.2 }
             }
           }}
+          initial="hidden"
+          animate={controls}
           className="text-xl text-muted-foreground mb-8"
         >
           Lead Product Designer at{' '}
@@ -128,6 +145,8 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
               transition: { duration: 0.8, ease: "easeOut", delay: 0.4 }
             }
           }}
+          initial="hidden"
+          animate={controls}
           className="flex items-center justify-center space-x-6 mb-12 mt-8"
         >
           <a 
@@ -168,6 +187,8 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
               transition: { duration: 0.8, ease: "easeOut", delay: 0.6 }
             }
           }}
+          initial="hidden"
+          animate={controls}
           className="text-lg text-muted-foreground leading-relaxed space-y-6"
         >
           <p>

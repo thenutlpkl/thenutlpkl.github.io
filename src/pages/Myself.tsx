@@ -1,9 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { motion, useInView } from 'framer-motion';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
-import TabContent from '../components/tabs/TabContent';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../lib/supabaseClients';
 import { Profile } from '../types/database.types';
@@ -27,12 +23,11 @@ const fetchProfile = async () => {
 };
 
 const Circle = () => {
-  const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   const ref = useRef(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const isInView = useInView(ref, { once: true });
 
-  const { data: profile, isLoading } = useQuery<Profile>({
+  const { data: profile } = useQuery<Profile>({
     queryKey: ['profile'],
     queryFn: fetchProfile,
     staleTime: 1000 * 60 * 5,
@@ -57,7 +52,6 @@ const Circle = () => {
         console.log('Image natural width:', img.naturalWidth);
         
         if (img.complete && img.naturalWidth > 0) {
-          setIsFullyLoaded(true);
           console.log('Image fully loaded');
         }
       };
@@ -72,7 +66,7 @@ const Circle = () => {
       
       // Force load check
       if (img.complete && img.naturalWidth > 0) {
-        setIsFullyLoaded(true);
+        console.log('Image fully loaded');
       }
       
       return () => {
@@ -87,8 +81,8 @@ const Circle = () => {
       ref={ref}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ 
-        opacity: isFullyLoaded ? 1 : 0, 
-        scale: isFullyLoaded ? 1 : 0.9 
+        opacity: isInView ? 1 : 0, 
+        scale: isInView ? 1 : 0.9 
       }}
       transition={{ 
         duration: 0.4, 
@@ -102,7 +96,7 @@ const Circle = () => {
       <motion.div
         initial={{ opacity: 0.3 }}
         animate={{ 
-          opacity: isFullyLoaded ? 0 : 0.3,
+          opacity: isInView ? 0 : 0.3,
           background: 'linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%)' 
         }}
         transition={{ duration: 0.3 }}
@@ -113,8 +107,8 @@ const Circle = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ 
-          opacity: isFullyLoaded ? 1 : 0, 
-          scale: isFullyLoaded ? 1 : 0.9 
+          opacity: isInView ? 1 : 0, 
+          scale: isInView ? 1 : 0.9 
         }}
         transition={{ 
           duration: 0.5, 
@@ -134,7 +128,7 @@ const Circle = () => {
           }}
           className="w-full h-full object-cover"
           style={{ 
-            opacity: isFullyLoaded ? 1 : 0,
+            opacity: isInView ? 1 : 0,
             transition: 'opacity 0.3s ease-in-out'
           }}
         />
@@ -168,21 +162,23 @@ const Content = () => {
   );
 };
 
+const tabs = [
+  { id: 'story' as const, label: 'Story' },
+  { id: 'skills' as const, label: 'Skills' },
+  { id: 'experience' as const, label: 'Experience' }
+] as const;
+
+type TabId = typeof tabs[number]['id'];
+
 interface TabsProps {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
+  activeTab: TabId;
+  setActiveTab: (tab: TabId) => void;
 }
 
 const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   
-  const tabs = [
-    { id: 'story', label: 'Story' },
-    { id: 'skill', label: 'Skill' },
-    { id: 'experiences', label: 'Experiences' },
-  ];
-
   return (
     <motion.nav
       ref={ref}
@@ -208,13 +204,52 @@ const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
   );
 };
 
-Tabs.propTypes = {
-  activeTab: PropTypes.string.isRequired,
-  setActiveTab: PropTypes.func.isRequired,
+interface TabContentProps {
+  activeTab: 'story' | 'skills' | 'experience';
+}
+
+const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'story':
+        return (
+          <div className="text-gray-300 text-base font-light leading-relaxed">
+            <h2 className="text-xl text-[#FEC6A1] mb-4">My Journey</h2>
+            <p>A passionate designer and developer who loves creating meaningful experiences.</p>
+          </div>
+        );
+      case 'skills':
+        return (
+          <div className="text-gray-300 text-base font-light leading-relaxed">
+            <h2 className="text-xl text-[#FEC6A1] mb-4">Technical Skills</h2>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Frontend Development (React, TypeScript)</li>
+              <li>UI/UX Design</li>
+              <li>Design Systems</li>
+            </ul>
+          </div>
+        );
+      case 'experience':
+        return (
+          <div className="text-gray-300 text-base font-light leading-relaxed">
+            <h2 className="text-xl text-[#FEC6A1] mb-4">Professional Experience</h2>
+            <p>Worked on various projects spanning design and development.</p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="w-full max-w-[500px] bg-background/40 backdrop-blur-lg border border-primary/10 rounded-xl p-6">
+      {renderContent()}
+    </div>
+  );
 };
 
 const Myself = () => {
-  const [activeTab, setActiveTab] = useState('story');
+  const [activeTab, setActiveTab] = useState<'story' | 'skills' | 'experience'>('story');
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true });
 
