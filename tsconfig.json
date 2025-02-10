@@ -21,9 +21,9 @@
     },
     "esModuleInterop": true,
     "typeRoots": ["./node_modules/@types", "./src/types"],
-    "types": ["vite/client"], // Add this line
-    "allowJs": true, // Add this line
-    "forceConsistentCasingInFileNames": true // Add this line
+    "types": ["vite/client"],
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "src",
