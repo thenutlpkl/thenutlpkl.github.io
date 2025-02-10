@@ -1,11 +1,9 @@
 // @ts-ignore
 import React from 'react';
-
-// Import necessary libraries
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../lib/supabaseClients';
 import { Project } from '../types/database.types';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 // Skeleton Loading Component
 const SkeletonCard = () => (
@@ -46,7 +44,6 @@ const Works = () => {
     retry: 3,
   });
 
-  // Detailed error handling
   if (isError) {
     console.error('Failed to fetch projects:', error);
     return (
@@ -62,7 +59,6 @@ const Works = () => {
     );
   }
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
@@ -73,73 +69,68 @@ const Works = () => {
     );
   }
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  };
-
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="max-w-5xl mx-auto">
         <motion.h3
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
           className="text-xl mb-8 font-light text-left"
         >
           <span className="text-primary">building</span> with love❤️
         </motion.h3>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="grid grid-cols-2 md:grid-cols-4 gap-6"
-        >
-          {projects?.map((project) => (
-            <motion.a
-              key={project.id}
-              variants={itemVariants}
-              href={project.project_url}
-              className="group relative aspect-square bg-card/50 rounded-3xl p-8 flex items-center justify-center transition-all duration-300 hover:-translate-y-1 hologram-glow backdrop-blur-sm border border-primary/10 overflow-hidden"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <img
-                src={project.logo_url}
-                alt={project.title}
-                className="w-[100px] h-[100px] rounded-[6px] object-cover opacity-80 group-hover:opacity-30 transition-opacity duration-300"
-              />
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <AnimatePresence>
+            {projects?.map((project, index) => (
+              <motion.a
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ 
+                  opacity: 1, 
+                  y: 0,
+                  transition: {
+                    duration: 0.8,
+                    delay: index * 0.1,
+                    ease: [0.21, 0.5, 0.51, 1],
+                  }
+                }}
+                exit={{ opacity: 0 }}
+                href={project.project_url}
+                className="group relative aspect-square bg-card/50 rounded-3xl p-8 
+                  flex items-center justify-center
+                  backdrop-blur-sm border border-primary/10 
+                  overflow-hidden hover:border-primary/20
+                  transition-all duration-300 ease-out"
+                whileHover={{ 
+                  y: -4,
+                  transition: { duration: 0.2 }
+                }}
+              >
+                <img
+                  src={project.logo_url}
+                  alt={project.title}
+                  className="w-[100px] h-[100px] rounded-[6px] object-cover 
+                    opacity-80 group-hover:opacity-30 
+                    transition-all duration-300 ease-out"
+                />
 
-              <div className="absolute inset-0 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-                <h4 className="relative z-10 text-lg font-medium text-white mb-2">
-                  {project.title}
-                </h4>
-                <p className="relative z-10 text-sm text-white/80 px-4 text-center">
-                  {project.description}
-                </p>
-              </div>
-            </motion.a>
-          ))}
-        </motion.div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center 
+                  opacity-0 group-hover:opacity-100 
+                  transition-all duration-300 ease-out">
+                  <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+                  <h4 className="relative z-10 text-lg font-medium text-white mb-2">
+                    {project.title}
+                  </h4>
+                  <p className="relative z-10 text-sm text-white/80 px-4 text-center">
+                    {project.description}
+                  </p>
+                </div>
+              </motion.a>
+            ))}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

@@ -1,15 +1,23 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Navigation from "@/components/Navigation";
 import ProjectGrid from "@/components/ProjectGrid";
 
 const Works = () => {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true });
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.includes('#works')) {
+      containerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
 
   return (
     <motion.div 
       ref={containerRef}
+      id="works"
       initial={{ opacity: 0 }}
       animate={isInView ? { opacity: 1 } : { opacity: 0 }}
       transition={{ duration: 0.8 }}

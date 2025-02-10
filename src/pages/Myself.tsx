@@ -1,64 +1,144 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { motion, useInView } from 'framer-motion';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import TabContent from '../components/tabs/TabContent';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '../lib/supabaseClients';
+import { Profile } from '../types/database.types';
 
 const buttonStyles = (isActive: boolean): string => `
   text-sm font-medium transition-all duration-500 px-4 py-2 rounded-full 
   ${isActive ? 'text-[#FEC6A1] bg-[#FEC6A1]/10' : 'text-muted-foreground hover:text-[#FEC6A1] hover:bg-[#FEC6A1]/5'}
 `;
 
+const fetchProfile = async () => {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('avatar_url')
+    .single();
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+};
+
 const Circle = () => {
+  const [isFullyLoaded, setIsFullyLoaded] = useState(false);
   const ref = useRef(null);
+  const imageRef = useRef<HTMLImageElement>(null);
   const isInView = useInView(ref, { once: true });
+
+  const { data: profile, isLoading } = useQuery<Profile>({
+    queryKey: ['profile'],
+    queryFn: fetchProfile,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+  });
+
+  const imageUrl = profile?.avatar_url || "https://shorturl.at/6Tkkw";
+  const fallbackImage = "https://shorturl.at/6Tkkw";
+
+  useEffect(() => {
+    console.log('Profile data:', profile);
+    console.log('Image URL:', imageUrl);
+  }, [profile, imageUrl]);
+
+  useEffect(() => {
+    if (imageRef.current) {
+      const img = imageRef.current;
+      
+      const handleLoad = () => {
+        console.log('Image load event triggered');
+        console.log('Image complete:', img.complete);
+        console.log('Image natural width:', img.naturalWidth);
+        
+        if (img.complete && img.naturalWidth > 0) {
+          setIsFullyLoaded(true);
+          console.log('Image fully loaded');
+        }
+      };
+
+      const handleError = () => {
+        console.error('Image load error');
+        img.src = fallbackImage;
+      };
+
+      img.addEventListener('load', handleLoad);
+      img.addEventListener('error', handleError);
+      
+      // Force load check
+      if (img.complete && img.naturalWidth > 0) {
+        setIsFullyLoaded(true);
+      }
+      
+      return () => {
+        img.removeEventListener('load', handleLoad);
+        img.removeEventListener('error', handleError);
+      };
+    }
+  }, [imageUrl, fallbackImage]);
 
   return (
     <motion.div
       ref={ref}
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0 }}
-      whileHover={{ scale: 1.02 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="relative w-[220px] h-[220px] rounded-full overflow-hidden group cursor-pointer"
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ 
+        opacity: isFullyLoaded ? 1 : 0, 
+        scale: isFullyLoaded ? 1 : 0.9 
+      }}
+      transition={{ 
+        duration: 0.4, 
+        type: "spring", 
+        stiffness: 120, 
+        damping: 10 
+      }}
+      className="w-[220px] h-[220px] rounded-full overflow-hidden relative"
     >
-      <motion.div 
-        className="absolute inset-0 bg-[#2A2E37] blur-md transform scale-105"
-        animate={{
-          opacity: [0.5, 0.8, 0.5],
+      {/* Animated background with gradient */}
+      <motion.div
+        initial={{ opacity: 0.3 }}
+        animate={{ 
+          opacity: isFullyLoaded ? 0 : 0.3,
+          background: 'linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%)' 
         }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
+        transition={{ duration: 0.3 }}
+        className="absolute inset-0 z-10"
       />
-      
-      <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-[#FEC6A1]/20">
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          className="w-full h-full"
-        >
-          <LazyLoadImage
-            src="https://shorturl.at/6Tkkw" // Replace with your image URL
-            alt="Profile"
-            effect="blur"
-            className="w-full h-full object-cover"
-            wrapperClassName="w-full h-full"
-          />
-        </motion.div>
-        
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-70 group-hover:opacity-40 transition-opacity duration-300" />
-        
-        <div 
-          className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
-          style={{
-            transform: 'translateX(-100%)',
-            animation: 'shine 1.5s infinite'
+
+      {/* Image container with fade and scale */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ 
+          opacity: isFullyLoaded ? 1 : 0, 
+          scale: isFullyLoaded ? 1 : 0.9 
+        }}
+        transition={{ 
+          duration: 0.5, 
+          type: "spring", 
+          stiffness: 100, 
+          damping: 9 
+        }}
+        className="w-full h-full"
+      >
+        <img
+          ref={imageRef}
+          src={imageUrl}
+          alt="Profile"
+          onError={(e) => {
+            console.error('Image error in onError');
+            (e.target as HTMLImageElement).src = fallbackImage;
+          }}
+          className="w-full h-full object-cover"
+          style={{ 
+            opacity: isFullyLoaded ? 1 : 0,
+            transition: 'opacity 0.3s ease-in-out'
           }}
         />
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

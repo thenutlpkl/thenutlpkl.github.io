@@ -1,236 +1,162 @@
-import { motion, useAnimation } from "framer-motion";
-import { useState } from "react";
-import mockupImage from "@/assets/projects/project-1/mobile.png";
-import MobileMockup from "@/assets/projects/project-2/mobile-mockup.png";
-import mobileRoomVu from "@/assets/projects/project-3/mobileRoomVu.png"
-import mobileProjectFour from "@/assets/projects/project-4/bigcover.png";
-import mobileProjectFive from "@/assets/projects/project-5/mobile.png";
-import leftProjectFive from "@/assets/projects/project-5/left.png";
-import rightProjectFive from "@/assets/projects/project-5/right.png";
+import { useState, useEffect, memo } from "react";
+import { motion } from "framer-motion";
 
-const projects = [
+// Types
+type Project = {
+  name: string;
+  year: string;
+  badge?: string;
+  description: string;
+  project_url: string;
+  technologies?: string[];
+};
+
+// Projects Data
+const projects: Project[] = [
   {
-    name: "AI Assistant for you recipe",
+    name: "AI Assistant you recipe",
     year: "2024",
-    badge: "NEW",
-    screen: mockupImage,
+    badge: "Done",
     description: "From scratch to MVP",
-    project_url: "https://www.behance.net/gallery/200280785/AI-powered-Recipe-Creation-Mobile-App"
+    project_url: "https://www.behance.net/gallery/200280785/AI-powered-Recipe-Creation-Mobile-App",
+    technologies: ["Cooking", "AI", "Mobile App"]
   },
   {
     name: "Subscription Management App",
     year: "2024",
-    screen: MobileMockup,
     description: "simplifying online payments",
-    project_url: "https://www.behance.net/gallery/172183057/Subscription-Management-App"
+    project_url: "https://www.behance.net/gallery/172183057/Subscription-Management-App",
+    technologies: ["Idea", "Fintech"]
   },
   {
     name: "ProfitA",
     year: "2024",
-    badge: "WIP",
-    screen: mobileRoomVu,
-    description: "Interactive Investment App.",
-    project_url: "https://www.behance.net/gallery/184983087/Mutual-fund-app"
+    badge:"Done",
+    description: "Interactive Investment App",
+    project_url: "https://www.behance.net/gallery/184983087/Mutual-fund-app",
+    technologies: ["Mutual Fund", "Finance", "Investment"]
   },
   {
     name: "RoomVu Redesign",
     year: "2023",
-    screen: mobileProjectFour,
     description: "Personal portfolio showcasing projects",
-    project_url: "https://www.behance.net/gallery/180111717/Website-redesign"
+    project_url: "https://www.behance.net/gallery/180111717/Website-redesign",
+    technologies: ["UI/UX", "Redesign"]
   },
   {
     name: "InstaCart Shopper",
     year: "2024",
-    screen: mobileProjectFive,
-    leftScreen: leftProjectFive,
-    rightScreen: rightProjectFive,
     description: "Redesign with idea of reduce batch cancel",
-    project_url: "https://medium.com/@thenutlpkl/instacart-shopper-app-revamp-b61c4c8ca1e9"
+    project_url: "https://medium.com/@thenutlpkl/instacart-shopper-app-revamp-b61c4c8ca1e9",
+    technologies: ["UX Research", "Idea", "Redesign"]
   }
 ];
 
-interface ProjectType {
-  name: string;
-  year: string;
-  badge?: string;
-  screen?: string;
-  leftScreen?: string;
-  rightScreen?: string;
-  description: string;
-  project_url?: string;
-}
-
-interface ProjectCardProps {
-  project: ProjectType;
-  className: string;
-}
-
-const ProjectCard = ({ project, className }: ProjectCardProps) => {
-  const imageControls = useAnimation();
-  const [isHovered, setIsHovered] = useState(false);
-  const isLargeCard = className.includes('md:col-span-7');
-  const isSubscriptionApp = project.name.includes('Subscription');
-  const isRoomVu = project.name.includes('Croods');
-  const isPortfolioWebsite = project.name.includes('Portfolio');
-  const isSayIt = project.name.includes('SayIt');
-
+// ProjectCard Component with memo
+const ProjectCard = memo(({ project }: { project: Project }) => {
   return (
-    <motion.a 
-      href={project.project_url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={`${className} rounded-[32px] relative overflow-hidden block no-underline`}
-      initial={{ backgroundColor: "#1E2028" }}
-      whileHover={{ backgroundColor: "#23242C" }}
-      transition={{ duration: 0.3 }}
-      onHoverStart={() => {
-        setIsHovered(true);
-        imageControls.start({ 
-          scale: 1.05,
-          transition: { duration: 0.3, ease: "easeInOut" }
-        });
-      }}
-      onHoverEnd={() => {
-        setIsHovered(false);
-        imageControls.start({ 
-          scale: 1,
-          transition: { duration: 0.3, ease: "easeInOut" }
-        });
+    <motion.div 
+      className="group relative"
+      whileHover={{ 
+        scale: 1.02,
+        transition: { duration: 0.3 }
       }}
     >
-      {/* Screen Content Container */}
-      {project.screen && (
-        <motion.div 
-          className={`absolute right-0 transform ${
-            project.name.includes('Subscription') || project.name.includes('ProfitA')
-              ? "bottom-[-20%] w-[121%] h-[72%] translate-x-[20%]" 
-              : project.name.includes('RoomVu')
-                ? "bottom-0 w-[126%] h-[75.6%] translate-x-[20%]" 
-              : isLargeCard 
-                ? "bottom-0 w-[90%] h-[130%] translate-x-[15%] translate-y-[10%]"
-                : project.name.includes('InstaCart')
-                  ? "bottom-0 w-[100%] h-[100%] translate-x-[0%] translate-y-[0%]"
-                  : "bottom-0 w-[100%] h-[100%] translate-x-[5%] translate-y-[5%]"
-          }`}
-        >
-          {project.name === 'InstaCart Shopper' && (
-            <div className="flex justify-between w-full h-full">
-              <motion.img 
-                src={project.leftScreen}
-                alt={project.name}
-                className={`w-full h-full object-contain object-left`}
-                animate={imageControls}
-                initial={{ scale: 1 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                loading="eager"
-              />
-              <motion.img 
-                src={project.screen}
-                alt={project.name}
-                className={`w-full h-full object-contain object-center`}
-                animate={imageControls}
-                initial={{ scale: 1 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                loading="eager"
-              />
-              <motion.img 
-                src={project.rightScreen}
-                alt={project.name}
-                className={`w-full h-full object-contain object-right`}
-                animate={imageControls}
-                initial={{ scale: 1 }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                loading="eager"
-              />
-            </div>
-          )}
-          {project.name !== 'InstaCart Shopper' && (
-            <motion.img 
-              src={project.screen}
-              alt={project.name}
-              className={`w-full h-full object-contain ${
-                project.name.includes('Subscription') || project.name.includes('ProfitA') ? "object-bottom" 
-                : project.name.includes('RoomVu') ? "object-center"
-                : isLargeCard ? "object-bottom" 
-                : "object-center"
-              }`}
-              animate={imageControls}
-              initial={{ scale: 1 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
-              loading="eager"
-            />
-          )}
-        </motion.div>
-      )}
-
-      {/* Content Wrapper */}
-      <div className="relative z-10 p-8 max-w-[60%]">
-        <div>
-          <p className="text-sm text-gray-400 mb-1">{project.year}</p>
-          <h3 className="text-xl font-medium text-white">{project.name}</h3>
-          <p className="text-base text-gray-400 mt-2">{project.description}</p>
-        </div>
+      {/* Gradient Border Container */}
+      <div className="absolute inset-0 rounded-[32px]
+        bg-gradient-to-br from-[#2A2D37]/80 via-[#373B47]/50 to-[#2A2D37]/80
+        group-hover:bg-gradient-to-tl
+        transition-all duration-700 ease-in-out">
       </div>
 
-      {/* Gradient Overlay */}
-      <motion.div
-        className="absolute inset-0 opacity-[0.03] z-20"
-        initial={{
-          background: "linear-gradient(120deg, #FEC6A1 0%, transparent 70%)",
-        }}
-        whileHover={{
-          background: "linear-gradient(45deg, #FEC6A1 0%, transparent 70%)",
-        }}
-        transition={{ duration: 0.3 }}
-      />
+      {/* Main Content */}
+      <div className="relative h-full rounded-[32px] 
+        bg-[#1E2028]/95 backdrop-blur-xl p-6
+        overflow-hidden">
+        
+        {/* Hover Gradient Overlay */}
+        <div className="absolute inset-0 opacity-0 
+          bg-gradient-to-tl from-[#FEC6A1]/5 via-transparent to-[#FEC6A1]/5
+          group-hover:opacity-100 transition-opacity duration-700"></div>
 
-      {/* Shine Effect */}
-      <motion.div
-        className="absolute inset-0 opacity-0 z-30"
-        initial={{ x: "-100%" }}
-        whileHover={{
-          x: "100%",
-          opacity: 0.1,
-          transition: { duration: 0.8, ease: "easeInOut" }
-        }}
-        style={{
-          background: "linear-gradient(90deg, transparent 0%, #FEC6A1 50%, transparent 100%)",
-        }}
-      />
-    </motion.a>
+        {/* Content */}
+        <div className="relative z-10">
+          <div className="flex justify-between items-start mb-4">
+            {project.badge && (
+              <span className="px-3 py-1 text-sm font-medium 
+                bg-gradient-to-r from-[#FEC6A1] to-[#FFD7BC]
+                group-hover:bg-gradient-to-l
+                transition-all duration-700 
+                text-black rounded-full">
+                {project.badge}
+              </span>
+            )}
+            <span className="text-sm text-gray-400">{project.year}</span>
+          </div>
+          
+          <h3 className="text-2xl font-bold text-white mb-3 
+            group-hover:text-[#FEC6A1] 
+            transition-colors duration-500">
+            {project.name}
+          </h3>
+          
+          <p className="text-base text-gray-300 mb-4 flex-grow">{project.description}</p>
+          
+          {project.technologies && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {project.technologies.map((tech, index) => (
+                <span 
+                  key={`${tech}-${index}`}
+                  className="px-2 py-1 bg-[#2C2F3A]/50 text-xs text-gray-300 
+                    rounded-full border border-[#3A3F4C]/50
+                    group-hover:border-[#FEC6A1]/20 
+                    group-hover:bg-[#2C2F3A]/70
+                    transition-all duration-500">
+                  {tech}
+                </span>
+              ))}
+            </div>
+          )}
+          
+          <a 
+            href={project.project_url} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="mt-auto inline-block text-[#FEC6A1] 
+              hover:text-[#FFD7BC] transition-all duration-500 
+              text-base font-medium 
+              group-hover:translate-x-1 transform">
+            View Project →
+          </a>
+        </div>
+      </div>
+    </motion.div>
   );
-};
+});
 
+// ProjectGrid Component
 const ProjectGrid = () => {
+  const [projectsList, setProjectsList] = useState(projects);
+
+  useEffect(() => {
+    console.log('ProjectGrid mounted, projects:', projectsList);
+    return () => console.log('ProjectGrid unmounted');
+  }, []);
+
+  useEffect(() => {
+    console.log('Projects updated:', projectsList);
+    setProjectsList([...projects]);
+  }, [projects]);
+
   return (
-    <div className="max-w-[900px] mx-auto px-4">
-      <div className="grid grid-cols-10 gap-6">
-        {/* First Row */}
-        <ProjectCard 
-          project={projects[0]} 
-          className="col-span-10 md:col-span-7 h-[400px]" 
-        />
-        <ProjectCard 
-          project={projects[1]} 
-          className="col-span-10 md:col-span-3 h-[400px]" 
-        />
-
-        {/* Second Row */}
-        <ProjectCard 
-          project={projects[2]} 
-          className="col-span-10 md:col-span-3 h-[400px]" 
-        />
-        <ProjectCard 
-          project={projects[3]} 
-          className="col-span-10 md:col-span-7 h-[400px]" 
-        />
-
-        {/* Third Row */}
-        <ProjectCard 
-          project={projects[4]} 
-          className="col-span-10 h-[400px]" 
-        />
+    <div className="max-w-[1200px] mx-auto px-4 py-12 sm:px-6 lg:px-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {projectsList.map((project, index) => (
+          <ProjectCard 
+            key={`${project.name}-${index}-${Date.now()}`}
+            project={project} 
+          />
+        ))}
       </div>
     </div>
   );

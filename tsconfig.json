@@ -19,8 +19,18 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "types": ["vite/client"], // Add this line
+    "allowJs": true, // Add this line
+    "forceConsistentCasingInFileNames": true // Add this line
   },
-  "include": ["src"],
+  "include": [
+    "src",
+    "src/types/*.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "vite.config.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

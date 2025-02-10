@@ -28,3 +28,14 @@ export interface Project {
       position: { x: number; y: number };
     }[];
   }
+
+  export interface Profile {
+    id?: string;
+    updated_at?: string;
+    username?: string;
+    full_name?: string;
+    avatar_url?: string;
+    website?: string;
+    bio?: string;
+    bio2?: string;
+  }
