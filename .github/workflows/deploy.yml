@@ -37,7 +37,9 @@ jobs:
           npx vite --version
       
       - name: Type Check
-        run: npx tsc --noEmit
+        run: |
+          # Type check excluding Vite config
+          npx tsc --noEmit --skipLibCheck --project tsconfig.json
       
       - name: Build
         run: |

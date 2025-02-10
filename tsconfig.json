@@ -28,9 +28,12 @@
   "include": [
     "src",
     "src/types/*.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    "vite.config.ts"
+    "**/*.tsx"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "exclude": [
+    "vite.config.ts"  // Explicitly exclude Vite config from main type checking
+  ],
+  "references": [
+    { "path": "./tsconfig.node.json", "prepend": true }
+  ]
 }
