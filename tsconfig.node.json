@@ -8,7 +8,7 @@
     "strict": false,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "noEmit": true,
+    "noEmit": false,
     "declaration": true,
     "outDir": "./dist"
   },

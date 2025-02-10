@@ -34,6 +34,6 @@
     "vite.config.ts"  // Explicitly exclude Vite config from main type checking
   ],
   "references": [
-    { "path": "./tsconfig.node.json", "prepend": true }
+    { "path": "./tsconfig.node.json" }
   ]
 }
