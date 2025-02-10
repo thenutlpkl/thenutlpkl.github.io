@@ -22,6 +22,13 @@ const Navigation = () => {
     }, 2000);
   };
 
+  const handleResumeClick = () => {
+    window.open('https://drive.google.com/file/d/1q8HJltl1wuugv__eucGxr5X4A0cVQh8E/view?usp=sharing', '_blank');
+    toast({
+      description: "Opening resume in new tab",
+    });
+  };
+
   const isActive = (path: string) => {
     return location.pathname === path;
   };
@@ -58,7 +65,18 @@ const Navigation = () => {
                 Myself
               </HashLink>
             </div>
-            <div>
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={handleResumeClick}
+                className="relative px-6 py-1.5 text-sm font-medium text-white rounded-full 
+                overflow-hidden transition-all duration-300 hover:scale-105 group"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FEC6A1] via-[#FF8C37] to-[#FEC6A1] 
+                opacity-80 group-hover:opacity-100 bg-[length:200%_100%] animate-gradientShift"></div>
+                <div className="absolute inset-0 bg-gradient-to-l from-[#FEC6A1] via-[#FF8C37] to-[#FEC6A1] 
+                opacity-0 group-hover:opacity-80 bg-[length:200%_100%] animate-gradientShiftReverse"></div>
+                <span className="relative">Resume</span>
+              </button>
               <button 
                 onClick={handleCopy} 
                 className="text-sm hover:text-[#FEC6A1] transition-colors"
