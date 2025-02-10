@@ -5,7 +5,7 @@ import path from 'path'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
-    base: '/tanawitch.github.io/',
+    base: mode === 'production' ? '/' : '/', // Use root for GitHub Pages
     plugins: [react()],
     resolve: {
       alias: {
