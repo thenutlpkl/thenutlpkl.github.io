@@ -1,81 +1,97 @@
-import { motion } from 'framer-motion';
+import React from 'react';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 
-const SkillTab = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+interface ContentSectionProps {
+  title: string;
+  children: React.ReactNode;
+}
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
+const ContentSection: React.FC<ContentSectionProps> = ({ title, children }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    once: true,
+    margin: "0px 0px -50px 0px"
+  });
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="max-w-[500px] mx-auto space-y-24" // Increased spacing between sections
+    <motion.div 
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ 
+        duration: 0.6, 
+        ease: "easeInOut",
+        staggerChildren: 0.2
+      }}
+      className="space-y-6"
     >
+      <motion.h3 
+        initial={{ opacity: 0, x: -20 }}
+        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="text-[#FEC6A1] text-xl font-light"
+      >
+        {title}
+      </motion.h3>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const SkillTab = () => {
+  return (
+    <div className="space-y-24 max-w-[500px] mx-auto">
       {/* Main Skills Grid */}
       <div className="space-y-16">
         {/* Product & Brand Section */}
-        <div className="grid grid-cols-2 gap-16"> {/* Adjusted grid and gap */}
-          {/* Product */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h3 className="text-[#FEC6A1] text-xl font-light">Product</h3>
+        <div className="grid grid-cols-2 gap-16">
+          <ContentSection title="Product">
             <ul className="space-y-4 text-gray-400 font-light">
               <li>UI/UX Architecture & Strategy</li>
               <li>Human-Centered Design Solutions</li>
               <li>Interactive Prototyping</li>
               <li>Design Systems Engineering</li>
             </ul>
-          </motion.div>
+          </ContentSection>
 
-          {/* Brand */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h3 className="text-[#FEC6A1] text-xl font-light">Brand</h3>
+          <ContentSection title="Brand">
             <ul className="space-y-4 text-gray-400 font-light">
               <li>Logo Design</li>
               <li>Icon Design</li>
               <li>Brand</li>
               <li>Presentation</li>
             </ul>
-          </motion.div>
+          </ContentSection>
         </div>
 
         {/* Web Development & Motion Section */}
-        <div className="grid grid-cols-2 gap-16"> {/* Consistent with above grid */}
-          {/* Web Development */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h3 className="text-[#FEC6A1] text-xl font-light">Web Development</h3>
+        <div className="grid grid-cols-2 gap-16">
+          <ContentSection title="Web Development">
             <ul className="space-y-4 text-gray-400 font-light">
               <li>Webflow</li>
               <li>Framer</li>
               <li>Builder.io</li>
             </ul>
-          </motion.div>
+          </ContentSection>
 
-          {/* Motion */}
-          <motion.div variants={itemVariants} className="space-y-6">
-            <h3 className="text-[#FEC6A1] text-xl font-light">Motion</h3>
+          <ContentSection title="Motion">
             <ul className="space-y-4 text-gray-400 font-light">
               <li>Motion Design & UI Animation</li>
               <li>Dynamic Presentation Design</li>
             </ul>
-          </motion.div>
+          </ContentSection>
         </div>
       </div>
 
       {/* Tools Section */}
-      <motion.div variants={itemVariants} className="space-y-6">
-        <h3 className="text-[#FEC6A1] text-xl font-light">Tools</h3>
+      <ContentSection title="Tools">
         <div className="flex flex-wrap gap-2">
           {['Figma', 'Adobe Creative tools', 'Next.js', 'Chat GPT', 'Claude', 
             'After Effects', 'Webflow', 'Wordpress', 'Supernova'].map((tool) => (
@@ -87,11 +103,10 @@ const SkillTab = () => {
             </span>
           ))}
         </div>
-      </motion.div>
+      </ContentSection>
 
       {/* When I'm not design Section */}
-      <motion.div variants={itemVariants} className="space-y-6">
-        <h3 className="text-[#FEC6A1] text-xl font-light">When I'm not design</h3>
+      <ContentSection title="When I'm not design">
         <div className="space-y-8">
           {/* I Read */}
           <div className="space-y-4">
@@ -129,11 +144,10 @@ const SkillTab = () => {
             </div>
           </div>
         </div>
-      </motion.div>
+      </ContentSection>
 
       {/* Interesting In Section */}
-      <motion.div variants={itemVariants} className="space-y-6">
-        <h3 className="text-[#FEC6A1] text-xl font-light">Interesting In</h3>
+      <ContentSection title="Interesting In">
         <div className="flex flex-wrap gap-2">
           {['Technologies', 'AI', 'AR/VR', 'Wearable Tech', 'Conflict', 'Crafting',
             'Sustainability', 'Games', 'Culture', 'History', 'Healthcare', 'Investment'].map((interest) => (
@@ -145,8 +159,8 @@ const SkillTab = () => {
             </span>
           ))}
         </div>
-      </motion.div>
-    </motion.div>
+      </ContentSection>
+    </div>
   );
 };
 

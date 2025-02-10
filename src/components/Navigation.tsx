@@ -10,9 +10,10 @@ const Navigation = () => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(window.location.href);
+    const urlToCopy = "https://thenutlpkl.github.io/";
+    navigator.clipboard.writeText(urlToCopy);
     toast({
-      description: "Current page URL copied to clipboard!",
+      description: "URL copied to clipboard!",
     });
     
     setIsCopied(true);

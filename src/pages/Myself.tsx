@@ -3,6 +3,9 @@ import { motion, useInView } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '../lib/supabaseClients';
 import { Profile } from '../types/database.types';
+import StoryTab from '@/components/tabs/StoryTab';
+import SkillTab from '@/components/tabs/SkillTab';
+import ExperienceTab from '@/components/tabs/ExperienceTab';
 
 const buttonStyles = (isActive: boolean): string => `
   text-sm font-medium transition-all duration-500 px-4 py-2 rounded-full 
@@ -38,33 +41,22 @@ const Circle = () => {
   const fallbackImage = "https://shorturl.at/6Tkkw";
 
   useEffect(() => {
-    console.log('Profile data:', profile);
-    console.log('Image URL:', imageUrl);
-  }, [profile, imageUrl]);
-
-  useEffect(() => {
     if (imageRef.current) {
       const img = imageRef.current;
       
       const handleLoad = () => {
-        console.log('Image load event triggered');
-        console.log('Image complete:', img.complete);
-        console.log('Image natural width:', img.naturalWidth);
-        
         if (img.complete && img.naturalWidth > 0) {
           console.log('Image fully loaded');
         }
       };
 
       const handleError = () => {
-        console.error('Image load error');
         img.src = fallbackImage;
       };
 
       img.addEventListener('load', handleLoad);
       img.addEventListener('error', handleError);
       
-      // Force load check
       if (img.complete && img.naturalWidth > 0) {
         console.log('Image fully loaded');
       }
@@ -92,7 +84,6 @@ const Circle = () => {
       }}
       className="w-[220px] h-[220px] rounded-full overflow-hidden relative"
     >
-      {/* Animated background with gradient */}
       <motion.div
         initial={{ opacity: 0.3 }}
         animate={{ 
@@ -102,8 +93,6 @@ const Circle = () => {
         transition={{ duration: 0.3 }}
         className="absolute inset-0 z-10"
       />
-
-      {/* Image container with fade and scale */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ 
@@ -123,7 +112,6 @@ const Circle = () => {
           src={imageUrl}
           alt="Profile"
           onError={(e) => {
-            console.error('Image error in onError');
             (e.target as HTMLImageElement).src = fallbackImage;
           }}
           className="w-full h-full object-cover"
@@ -205,51 +193,21 @@ const Tabs: React.FC<TabsProps> = ({ activeTab, setActiveTab }) => {
 };
 
 interface TabContentProps {
-  activeTab: 'story' | 'skills' | 'experience';
+  activeTab: TabId;
 }
 
 const TabContent: React.FC<TabContentProps> = ({ activeTab }) => {
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'story':
-        return (
-          <div className="text-gray-300 text-base font-light leading-relaxed">
-            <h2 className="text-xl text-[#FEC6A1] mb-4">My Journey</h2>
-            <p>A passionate designer and developer who loves creating meaningful experiences.</p>
-          </div>
-        );
-      case 'skills':
-        return (
-          <div className="text-gray-300 text-base font-light leading-relaxed">
-            <h2 className="text-xl text-[#FEC6A1] mb-4">Technical Skills</h2>
-            <ul className="list-disc pl-5 space-y-2">
-              <li>Frontend Development (React, TypeScript)</li>
-              <li>UI/UX Design</li>
-              <li>Design Systems</li>
-            </ul>
-          </div>
-        );
-      case 'experience':
-        return (
-          <div className="text-gray-300 text-base font-light leading-relaxed">
-            <h2 className="text-xl text-[#FEC6A1] mb-4">Professional Experience</h2>
-            <p>Worked on various projects spanning design and development.</p>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
-    <div className="w-full max-w-[500px] bg-background/40 backdrop-blur-lg border border-primary/10 rounded-xl p-6">
-      {renderContent()}
+    <div className="w-full max-w-[500px]">
+      {activeTab === 'story' && <StoryTab />}
+      {activeTab === 'skills' && <SkillTab />}
+      {activeTab === 'experience' && <ExperienceTab />}
     </div>
   );
 };
 
 const Myself = () => {
-  const [activeTab, setActiveTab] = useState<'story' | 'skills' | 'experience'>('story');
+  const [activeTab, setActiveTab] = useState<TabId>('story');
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true });
 

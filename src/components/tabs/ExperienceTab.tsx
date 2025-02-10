@@ -1,21 +1,68 @@
-import { motion } from 'framer-motion';
+import React from 'react';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
+
+interface ContentSectionProps {
+  title: string;
+  period: string;
+  descriptions: string[];
+  isCurrent?: boolean;
+}
+
+const ContentSection: React.FC<ContentSectionProps> = ({ title, period, descriptions, isCurrent }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, {
+    once: true,
+    margin: "0px 0px -50px 0px"
+  });
+
+  return (
+    <motion.div 
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ 
+        duration: 0.6, 
+        ease: "easeInOut",
+        staggerChildren: 0.2
+      }}
+      className="space-y-6"
+    >
+      <motion.h3 
+        initial={{ opacity: 0, x: -20 }}
+        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className={`font-light text-lg ${isCurrent ? "text-[#FEC6A1]" : "text-white"}`}
+      >
+        {title}
+      </motion.h3>
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={isInView ? { opacity: 1 } : { opacity: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="space-y-4"
+      >
+        <p className="text-gray-400 font-light text-sm flex items-center gap-2">
+          {period}
+          {isCurrent && (
+            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[#FEC6A1] bg-opacity-10 text-[#FEC6A1]">
+              Current
+            </span>
+          )}
+        </p>
+        <div className="space-y-3">
+          {descriptions.map((desc, index) => (
+            <p key={index} className="text-gray-400 font-light text-base leading-relaxed">
+              {desc}
+            </p>
+          ))}
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 const ExperiencesTab = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   const experiences = [
     {
       title: "Invitrace Company Limited, Lead Product Designer",
@@ -91,48 +138,17 @@ const ExperiencesTab = () => {
   ];
 
   return (
-    <motion.div
-      className="max-w-[500px] mx-auto"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <div className="space-y-16">
-        {experiences.map((exp) => (
-          <motion.div 
-            key={exp.title}
-            variants={itemVariants}
-            className="relative"
-          >
-            <div className="space-y-4">
-              <div>
-                <h3 className={`font-light text-lg ${
-                  exp.period.includes("Present") ? "text-[#FEC6A1]" : "text-white"
-                }`}>
-                  {exp.title}
-                </h3>
-                <p className="text-gray-400 font-light text-sm flex items-center gap-2">
-                  {exp.period}
-                  {exp.period.includes("Present") && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[#FEC6A1] bg-opacity-10 text-[#FEC6A1]">
-                      Current
-                    </span>
-                  )}
-                </p>
-              </div>
-              
-              <div className="space-y-3">
-                {exp.descriptions.map((desc, i) => (
-                  <p key={i} className="text-gray-400 font-light text-base leading-relaxed">
-                    {desc}
-                  </p>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-    </motion.div>
+    <div className="space-y-16 max-w-[500px] mx-auto">
+      {experiences.map((exp) => (
+        <ContentSection
+          key={exp.title}
+          title={exp.title}
+          period={exp.period}
+          descriptions={exp.descriptions}
+          isCurrent={exp.period.includes("Present")}
+        />
+      ))}
+    </div>
   );
 };
 

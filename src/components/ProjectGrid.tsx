@@ -16,7 +16,6 @@ const projects: Project[] = [
   {
     name: "AI Assistant you recipe",
     year: "2024",
-    badge: "Done",
     description: "From scratch to MVP",
     project_url: "https://www.behance.net/gallery/200280785/AI-powered-Recipe-Creation-Mobile-App",
     technologies: ["Cooking", "AI", "Mobile App"]
@@ -31,7 +30,6 @@ const projects: Project[] = [
   {
     name: "ProfitA",
     year: "2024",
-    badge:"Done",
     description: "Interactive Investment App",
     project_url: "https://www.behance.net/gallery/184983087/Mutual-fund-app",
     technologies: ["Mutual Fund", "Finance", "Investment"]
