@@ -2,6 +2,7 @@ import { Linkedin } from "lucide-react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import React, { useRef, useEffect } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface HeroProps {
   onLoadComplete?: () => void;
@@ -309,13 +310,13 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
       <p className="text-lg text-muted-foreground leading-relaxed mb-6">
         With the opportunities to work on multiple design systems in the past, there's quite a bit to share, so grab a cup of ☕️ or 🍵 and let me tell you how I think of it.
       </p>
-      <a 
-        href="/design-system" 
+      <RouterLink 
+        to="/design-system" 
         className="inline-flex items-center gap-2 text-[#FEC6A1] hover:text-[#FEC6A1]/80 transition-colors group"
       >
         Come on in 
         <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
-      </a>
+      </RouterLink>
     </div>
   </div>
 </motion.div>

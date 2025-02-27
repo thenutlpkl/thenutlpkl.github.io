@@ -72,7 +72,7 @@ const Navigation = () => {
                   >
                     Tanawitch
                     <Chips 
-                      label="New" 
+                      label="Open to Relocation" 
                       variant="gradient" 
                       color="pink-purple" 
                       size="tiny" 
