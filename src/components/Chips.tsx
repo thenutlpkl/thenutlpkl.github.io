@@ -27,12 +27,12 @@ const Chips: React.FC<ChipsProps> = ({
     outlined: 'border border-gray-300 bg-transparent text-gray-800',
     filled: 'text-white',
     notification: 'absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2',
-    gradient: 'absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2 bg-gradient-to-r'
+    gradient: 'absolute top-0 right-0 transform translate-x-3/4 -translate-y-3/4 bg-gradient-to-r'
   };
 
   // Size styles
   const sizeStyles = {
-    tiny: 'text-[10px] px-1 py-0.5 min-w-[16px] h-[16px]',
+    tiny: 'text-[9px] px-1.5 py-0.5 min-w-[16px] h-[16px] leading-none',
     small: 'text-xs px-2 py-1',
     medium: 'text-sm px-3 py-1.5',
     large: 'text-base px-4 py-2'
@@ -97,6 +97,7 @@ const Chips: React.FC<ChipsProps> = ({
     ${colorStyles[color][variant]} 
     ${interactiveStyles} 
     ${className}
+    whitespace-nowrap
   `.trim();
 
   return (

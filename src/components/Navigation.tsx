@@ -70,14 +70,16 @@ const Navigation = () => {
                     hover:text-[#FEC6A1] hover:drop-shadow-[0_0_8px_rgba(254,198,161,0.3)] 
                     ${isActive('/') ? 'text-[#FEC6A1] drop-shadow-[0_0_8px_rgba(254,198,161,0.3)]' : 'text-gray-300'}`}
                   >
-                    Tanawitch
-                    <Chips 
-                      label="Open to Relocation" 
-                      variant="gradient" 
-                      color="pink-purple" 
-                      size="tiny" 
-                      className="ml-1"
-                    />
+                    <div className="flex items-center space-x-4">
+                      <span className="text-lg font-bold">Tanawitch</span>
+                      <Chips 
+                        label="Open to relocation" 
+                        variant="filled" 
+                        color="secondary" 
+                        size="tiny" 
+                        className="absolute -top-2 -right-10"
+                      />
+                    </div>
                   </RouterLink>
                 </div>
               </div>
