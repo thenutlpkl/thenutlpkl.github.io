@@ -17,6 +17,7 @@ const Index = React.lazy(() => import("./pages/Index"));
 const Myself = React.lazy(() => import("./pages/Myself"));
 const Works = React.lazy(() => import("./pages/Works"));
 const DesignSystem = React.lazy(() => import("./pages/DesignSystem"));
+const Techstack = React.lazy(() => import("./pages/Techstack"));
 
 // Custom Loading Component
 const PageLoader = () => (
@@ -126,6 +127,16 @@ const App: React.FC = () => {
                         transition={{ duration: 0.3 }}
                       >
                         <DesignSystem />
+                      </motion.div>
+                    } />
+                    <Route path="/techstack" element={
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Techstack />
                       </motion.div>
                     } />
                   </Routes>

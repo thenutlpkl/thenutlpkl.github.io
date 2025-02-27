@@ -118,8 +118,7 @@ const StoryTab: React.FC<StoryTabProps> = () => {
       {/* Current */}
       <ContentSection title="Currently">
         <p className="text-base text-gray-400 font-light leading-relaxed">
-          Currently, I'm passionate about creating impactful digital experiences that bridge 
-          technology, design, and human needs.
+        I work as a Lead Designer at a healthtech company in Thailand, where I focus on creating meaningful digital experiences that bridge technology, design, and human needs. I am always looking for opportunities to grow, refine my skills, and take on new challenges—including relocation for the right opportunity.
         </p>
       </ContentSection>
     </div>

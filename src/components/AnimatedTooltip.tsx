@@ -54,11 +54,6 @@ const AnimatedTooltip: React.FC<AnimatedTooltipProps> = ({ description, children
               <p className="text-sm whitespace-normal leading-relaxed">
                 {displayText}
               </p>
-              <div 
-                className="absolute w-3 h-3 bg-background/40 border-b border-r border-primary/10
-                           left-1/2 -bottom-1.5 
-                           transform -translate-x-1/2 rotate-45"
-              />
             </div>
           </div>
         )}
