@@ -108,7 +108,7 @@ const SkillTab = () => {
       </div>
 
       {/* Tools Section */}
-      <ContentSection title="Tools">
+      <ContentSection title="Tech & Design Toolbox">
         <div className="flex flex-wrap gap-2">
           {Object.entries(toolsData).map(([tool, description]) => (
             <AnimatedTooltip 

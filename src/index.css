@@ -3,6 +3,11 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    overscroll-behavior: none;
+    background-color: #000; /* or your dark background color */
+  }
+  
   :root {
     --background: 230 25% 8%; /* Darker background */
     --foreground: 210 40% 98%;

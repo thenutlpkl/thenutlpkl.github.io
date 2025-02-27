@@ -5,6 +5,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 // Lazy load components
 const ParticleEffect = React.lazy(() => import("./components/ParticleEffect"));
@@ -14,7 +16,31 @@ const Footer = React.lazy(() => import("./components/Footer"));
 const Index = React.lazy(() => import("./pages/Index"));
 const Myself = React.lazy(() => import("./pages/Myself"));
 const Works = React.lazy(() => import("./pages/Works"));
-const DesignSystem = React.lazy(() => import("./pages/DesignSystem")); // Add this line
+const DesignSystem = React.lazy(() => import("./pages/DesignSystem"));
+
+// Custom Loading Component
+const PageLoader = () => (
+  <motion.div 
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.3 }}
+    className="fixed inset-0 z-50 flex items-center justify-center bg-background"
+  >
+    <motion.div
+      animate={{
+        scale: [1, 1.1, 1],
+        rotate: [0, 5, -5, 0],
+      }}
+      transition={{
+        duration: 1.5,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+      className="w-12 h-12 rounded-full bg-[#FEC6A1]/50"
+    />
+  </motion.div>
+);
 
 // Create QueryClient with better config
 const queryClient = new QueryClient({
@@ -26,7 +52,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Route logger with memo
 const RouteLogger = React.memo(() => {
   const location = useLocation();
   
@@ -42,7 +67,6 @@ const RouteLogger = React.memo(() => {
 });
 
 const App: React.FC = () => {
-  // Add HMR logging
   if (import.meta.hot) {
     import.meta.hot.accept(() => {
       console.log('HMR update accepted');
@@ -52,7 +76,7 @@ const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<PageLoader />}>
           <div className="flex flex-col min-h-screen">
             <ParticleEffect />
             <CustomCursor />
@@ -61,14 +85,52 @@ const App: React.FC = () => {
             <Router>
               <RouteLogger />
               <Navigation />
-              <main className="flex-grow">
-                <Routes>
-                  <Route path="/" element={<Index />} />
-                  <Route path="/myself" element={<Myself />} />
-                  <Route path="/works" element={<Works />} />
-                  <Route path="/design-system" element={<DesignSystem />} /> {/* Add this line */}
-                </Routes>
-              </main>
+              <AnimatePresence mode="wait">
+                <main className="flex-grow">
+                  <Routes>
+                    <Route path="/" element={
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Index />
+                      </motion.div>
+                    } />
+                    <Route path="/myself" element={
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Myself />
+                      </motion.div>
+                    } />
+                    <Route path="/works" element={
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Works />
+                      </motion.div>
+                    } />
+                    <Route path="/design-system" element={
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <DesignSystem />
+                      </motion.div>
+                    } />
+                  </Routes>
+                </main>
+              </AnimatePresence>
               <Footer />
             </Router>
           </div>
@@ -79,4 +141,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
