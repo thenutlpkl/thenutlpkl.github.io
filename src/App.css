@@ -133,3 +133,43 @@
     transform: translateX(100%);
   }
 }
+
+/* Add these styles to your CSS */
+.tooltip-typing::after {
+  content: '|';
+  animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Optional: Add smooth transitions for the tooltip */
+.tooltip-container {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Add to your global CSS */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-pulse {
+  animation: blink 1s step-start infinite;
+}
+
+/* In your global CSS */
+html, body {
+  cursor: none;
+}
+
+/* Hide cursor on interactive elements */
+a, button, [role="button"], [type="button"], [type="submit"] {
+  cursor: none;
+}
+
+/* Optional: Hide cursor on the entire app */
+#root {
+  cursor: none;
+}

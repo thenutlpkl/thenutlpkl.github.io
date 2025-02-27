@@ -81,18 +81,18 @@ const Works: React.FC<WorksProps> = ({ onLoadComplete }) => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16">
-      <div className="max-w-5xl mx-auto">
+    <div className="container mx-auto px-4 pt-[20vh] pb-16">
+      <div className="max-w-3xl mx-auto">
         <motion.h3
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="text-xl mb-8 font-light text-left"
+          className="text-xl mb-8 font-light text-center"
         >
-          <span className="text-primary">building</span> with love❤️
+          <span className="text-primary">Part of the journey</span>
         </motion.h3>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-3 gap-4">
           <AnimatePresence>
             {projects?.map((project, index) => (
               <motion.a
@@ -109,8 +109,8 @@ const Works: React.FC<WorksProps> = ({ onLoadComplete }) => {
                 }}
                 exit={{ opacity: 0 }}
                 href={project.project_url}
-                className="group relative aspect-square bg-card/50 rounded-3xl p-8 
-                  flex items-center justify-center
+                className="group relative aspect-square bg-card/50 rounded-2xl p-4
+                  flex flex-col items-center justify-center gap-3
                   backdrop-blur-sm border border-primary/10 
                   overflow-hidden hover:border-primary/20
                   transition-all duration-300 ease-out"
@@ -119,22 +119,31 @@ const Works: React.FC<WorksProps> = ({ onLoadComplete }) => {
                   transition: { duration: 0.2 }
                 }}
               >
-                <img
-                  src={project.logo_url}
-                  alt={project.title}
-                  className="w-[100px] h-[100px] rounded-[6px] object-cover 
-                    opacity-80 group-hover:opacity-30 
-                    transition-all duration-300 ease-out"
-                />
+                <div className="relative">
+                  <div className="absolute inset-0 blur-md bg-gray-800/40 scale-105" />
+                  <img
+                    src={project.logo_url}
+                    alt={project.title}
+                    className="relative w-[120px] h-[120px] rounded-[6px] object-cover
+                      opacity-90 group-hover:opacity-30 
+                      transition-all duration-300 ease-out
+                      shadow-lg shadow-gray-800/40"
+                  />
+                </div>
+                
+                <h4 className="text-sm font-medium text-white/80 text-center
+                  group-hover:opacity-0 transition-opacity duration-300">
+                  {project.title}
+                </h4>
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center 
                   opacity-0 group-hover:opacity-100 
                   transition-all duration-300 ease-out">
                   <div className="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
-                  <h4 className="relative z-10 text-lg font-medium text-white mb-2">
+                  <h4 className="relative z-10 text-base font-medium text-white mb-1">
                     {project.title}
                   </h4>
-                  <p className="relative z-10 text-sm text-white/80 px-4 text-center">
+                  <p className="relative z-10 text-xs text-white/80 px-3 text-center">
                     {project.description}
                   </p>
                 </div>
@@ -145,6 +154,7 @@ const Works: React.FC<WorksProps> = ({ onLoadComplete }) => {
       </div>
     </div>
   );
+
 };
 
 export default Works;

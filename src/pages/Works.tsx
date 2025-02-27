@@ -36,7 +36,7 @@ const Works = () => {
             <h1 className="text-2xl font-light text-[#FEC6A1]">
               Works
             </h1>
-            <p className="text-gray-400 text-base font-light leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base text-gray-400 font-light leading-relaxed max-w-2xl mx-auto">
               It has been an absolute pleasure to put my heart and soul into these projects. 
               While you're here, browse these projects.
             </p>

@@ -1,3 +1,4 @@
+// App.tsx
 import React, { useEffect, Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -13,6 +14,7 @@ const Footer = React.lazy(() => import("./components/Footer"));
 const Index = React.lazy(() => import("./pages/Index"));
 const Myself = React.lazy(() => import("./pages/Myself"));
 const Works = React.lazy(() => import("./pages/Works"));
+const DesignSystem = React.lazy(() => import("./pages/DesignSystem")); // Add this line
 
 // Create QueryClient with better config
 const queryClient = new QueryClient({
@@ -64,6 +66,7 @@ const App: React.FC = () => {
                   <Route path="/" element={<Index />} />
                   <Route path="/myself" element={<Myself />} />
                   <Route path="/works" element={<Works />} />
+                  <Route path="/design-system" element={<DesignSystem />} /> {/* Add this line */}
                 </Routes>
               </main>
               <Footer />
@@ -76,3 +79,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+

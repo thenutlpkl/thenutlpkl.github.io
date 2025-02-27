@@ -1,4 +1,4 @@
-import { Instagram, Linkedin } from "lucide-react";
+import { Linkedin } from "lucide-react";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import React, { useRef, useEffect } from 'react';
 import { motion, useAnimation, useInView } from 'framer-motion';
@@ -46,9 +46,9 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
       }}
       initial="hidden"
       animate={controls}
-      className="container mx-auto px-4 pt-32 pb-16"
+      className="container mx-auto px-4 pt-[20vh] pb-16"
     >
-      <div className="max-w-3xl mx-auto text-center">
+      <div className="max-w-3xl mx-auto">
         <motion.div 
           ref={textRef}
           variants={{
@@ -61,7 +61,7 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
           }}
           initial="hidden"
           animate={controls}
-          className="flex items-center justify-center space-x-4 mb-2"
+          className="flex items-center justify-start space-x-4 mb-2"
         >
           <h1 className="text-4xl font-light">Hey,</h1>
           <div className="overflow-hidden rounded-full w-[56px] h-[56px] bg-primary/10 flex items-center justify-center">
@@ -147,17 +147,8 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
           }}
           initial="hidden"
           animate={controls}
-          className="flex items-center justify-center space-x-6 mb-12 mt-8"
+          className="flex items-center justify-start space-x-6 mb-12 mt-8"
         >
-          <a 
-            href="https://www.instagram.com/nate_sume/" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            <Instagram size={18} />
-            <span>Instagram</span>
-          </a>
           <a 
             href="https://www.linkedin.com/in/tanawitch-saentree/" 
             target="_blank" 
@@ -192,11 +183,11 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
           className="text-lg text-muted-foreground leading-relaxed space-y-6"
         >
           <p>
-            A lifelong learner and designer who grows my stories through designs and illustrations. 
-            With over 15 years of experience in the design industry, I strive to prove that design 
-            can solve anything while working towards creating something of my own.
+          As Lead Designer at Invitrace, I drive the design strategy and innovation for our healthcare technology products, ensuring high-quality solutions that deliver value to our customers.
           </p>
-          
+          <p>
+            I'm dedicated to mentoring colleagues, conducting thoughtful design reviews, and fostering knowledge-sharing to continuously elevate our collective expertise and deliver exceptional healthcare experiences.
+          </p>
           {/* Development Message Chip */}
           <div className="inline-flex items-center gap-2 
             px-4 py-2.5
@@ -269,6 +260,65 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
           </div>
         </motion.div>
 
+{/* Projects Introduction */}
+<motion.div 
+  variants={{
+    hidden: { y: 30, opacity: 0 },
+    visible: { 
+      y: 0, 
+      opacity: 1,
+      transition: { duration: 0.8, ease: "easeOut", delay: 1.0 }
+    }
+  }}
+  initial="hidden"
+  animate={controls}
+  className="mt-32"
+>
+  {/* Wide Image with Interactive Animation */}
+  <div className="w-full h-[320px] mb-12 rounded-2xl overflow-hidden bg-[#2C2F3A]/30 backdrop-blur-md">
+    <motion.img 
+      src="https://images.unsplash.com/photo-1620207418302-439b387441b0?q=80&w=2167&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+      alt="Projects Overview" 
+      className="w-full h-full object-cover"
+      initial={{ scale: 1.2 }}
+      animate={{ 
+        scale: [1.2, 1.25, 1.2],
+        x: [0, 5, -5, 0],
+        y: [0, -5, 5, 0]
+      }}
+      transition={{
+        duration: 10,
+        repeat: Infinity,
+        repeatType: "loop",
+        ease: "easeInOut"
+      }}
+    />
+  </div>
+
+  {/* Two Column Layout */}
+  <div className="grid grid-cols-2 gap-16 max-w-3xl mx-auto">
+    {/* Left Column */}
+    <div className="flex items-start">
+      <h2 className="text-4xl font-serif font-light text-[#FEC6A1] italic">
+        Things I've worked on
+      </h2>
+    </div>
+
+    {/* Right Column */}
+    <div className="flex flex-col items-start">
+      <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+        With the opportunities to work on multiple design systems in the past, there's quite a bit to share, so grab a cup of ☕️ or 🍵 and let me tell you how I think of it.
+      </p>
+      <a 
+        href="/design-system" 
+        className="inline-flex items-center gap-2 text-[#FEC6A1] hover:text-[#FEC6A1]/80 transition-colors group"
+      >
+        Come on in 
+        <span className="inline-block transition-transform group-hover:translate-x-1">→</span>
+      </a>
+    </div>
+  </div>
+</motion.div>
         {/* Global Styles for Animations */}
         <style>{`
           @keyframes bounce {

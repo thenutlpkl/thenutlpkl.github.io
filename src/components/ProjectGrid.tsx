@@ -1,16 +1,18 @@
-import { useState, useEffect, memo } from "react";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from 'react';
 
-// Types
-type Project = {
+// Define Project type
+export interface Project {
   name: string;
-  year: string;
-  badge?: string;
   description: string;
-  project_url: string;
-  technologies?: string[];
-};
+  technologies: string[];
+  imageUrl?: string;
+  githubLink?: string;
+  liveLink?: string;
+  year?: string;
+  project_url?: string;
+}
 
+// Placeholder projects data (you can replace this with your actual projects)
 // Projects Data
 const projects: Project[] = [
   {
@@ -50,89 +52,35 @@ const projects: Project[] = [
   }
 ];
 
-// ProjectCard Component with memo
-const ProjectCard = memo(({ project }: { project: Project }) => {
+// ProjectCard component
+const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
   return (
-    <motion.div 
-      className="group relative"
-      whileHover={{ 
-        scale: 1.02,
-        transition: { duration: 0.3 }
-      }}
-    >
-      {/* Gradient Border Container */}
-      <div className="absolute inset-0 rounded-[32px]
-        bg-gradient-to-br from-[#2A2D37]/80 via-[#373B47]/50 to-[#2A2D37]/80
-        group-hover:bg-gradient-to-tl
-        transition-all duration-700 ease-in-out">
-      </div>
-
-      {/* Main Content */}
-      <div className="relative h-full rounded-[32px] 
-        bg-[#1E2028]/95 backdrop-blur-xl p-6
-        overflow-hidden">
-        
-        {/* Hover Gradient Overlay */}
-        <div className="absolute inset-0 opacity-0 
-          bg-gradient-to-tl from-[#FEC6A1]/5 via-transparent to-[#FEC6A1]/5
-          group-hover:opacity-100 transition-opacity duration-700"></div>
-
-        {/* Content */}
-        <div className="relative z-10">
-          <div className="flex justify-between items-start mb-4">
-            {project.badge && (
-              <span className="px-3 py-1 text-sm font-medium 
-                bg-gradient-to-r from-[#FEC6A1] to-[#FFD7BC]
-                group-hover:bg-gradient-to-l
-                transition-all duration-700 
-                text-black rounded-full">
-                {project.badge}
-              </span>
-            )}
-            <span className="text-sm text-gray-400">{project.year}</span>
-          </div>
-          
-          <h3 className="text-2xl font-bold text-white mb-3 
-            group-hover:text-[#FEC6A1] 
-            transition-colors duration-500">
-            {project.name}
-          </h3>
-          
-          <p className="text-base text-gray-300 mb-4 flex-grow">{project.description}</p>
-          
-          {project.technologies && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {project.technologies.map((tech, index) => (
-                <span 
-                  key={`${tech}-${index}`}
-                  className="px-2 py-1 bg-[#2C2F3A]/50 text-xs text-gray-300 
-                    rounded-full border border-[#3A3F4C]/50
-                    group-hover:border-[#FEC6A1]/20 
-                    group-hover:bg-[#2C2F3A]/70
-                    transition-all duration-500">
-                  {tech}
-                </span>
-              ))}
-            </div>
-          )}
-          
-          <a 
-            href={project.project_url} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="mt-auto inline-block text-[#FEC6A1] 
-              hover:text-[#FFD7BC] transition-all duration-500 
-              text-base font-medium 
-              group-hover:translate-x-1 transform">
-            View Project →
-          </a>
+    <div className="bg-background/50 border border-white/10 rounded-xl p-6 space-y-4 hover:border-primary/30 transition-all duration-300">
+      {project.imageUrl && (
+        <div className="w-full h-48 rounded-lg overflow-hidden mb-4">
+          <img 
+            src={project.imageUrl} 
+            alt={project.name} 
+            className="w-full h-full object-cover"
+          />
         </div>
+      )}
+      <h3 className="text-xl font-semibold text-[#FEC6A1]">{project.name}</h3>
+      <p className="text-muted-foreground">{project.description}</p>
+      <div className="flex flex-wrap gap-2">
+        {project.technologies.map((tech) => (
+          <span 
+            key={tech} 
+            className="px-3 py-1 rounded-full bg-background/30 text-xs text-muted-foreground"
+          >
+            {tech}
+          </span>
+        ))}
       </div>
-    </motion.div>
+    </div>
   );
-});
+};
 
-// ProjectGrid Component
 const ProjectGrid = () => {
   const [projectsList, setProjectsList] = useState(projects);
 
@@ -147,17 +95,20 @@ const ProjectGrid = () => {
   }, [projects]);
 
   return (
-    <div className="max-w-[1200px] mx-auto px-4 py-12 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projectsList.map((project, index) => (
-          <ProjectCard 
-            key={`${project.name}-${index}-${Date.now()}`}
-            project={project} 
-          />
-        ))}
+    <div className="container mx-auto px-4">
+      <div className="max-w-3xl mx-auto"> {/* This matches Hero's container */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projectsList.map((project, index) => (
+            <ProjectCard 
+              key={`${project.name}-${index}-${Date.now()}`}
+              project={project} 
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
-};
+}; 
 
 export default ProjectGrid;
+
