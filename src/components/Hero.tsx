@@ -160,6 +160,15 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
             <span>LinkedIn</span>
           </a>
           <a 
+            href="https://www.behance.net/tanawitchsaentree" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="flex items-center space-x-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+          >
+            <span className="w-[18px] h-[18px] flex items-center justify-center">B</span>
+            <span>Behance</span>
+          </a>
+          <a 
             href="https://medium.com/@thenutlpkl" 
             target="_blank" 
             rel="noopener noreferrer" 
@@ -169,6 +178,25 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
             <span>Medium</span>
           </a>
         </motion.div>
+
+        <div className="inline-flex items-center gap-2.5 px-4 py-2.5 bg-[#2C2F3A]/30 backdrop-blur-md border border-[#3A3F4C]/30 shadow-sm shadow-black/10 transition-all duration-300 mb-4">
+          <svg 
+            className="w-4 h-4 text-gray-300" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              strokeWidth={2} 
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
+            />
+          </svg>
+          <span className="text-sm font-medium text-gray-300">
+            Currently based in Thailand with a valid Canadian visa. Open to relocation, including returning to Canada upon receiving a job offer.
+          </span>
+        </div>
 
         <motion.div 
           variants={{
@@ -184,7 +212,7 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
           className="text-lg text-muted-foreground leading-relaxed space-y-6"
         >
           <p>
-          As Lead Designer at Invitrace, I drive the design strategy and innovation for our healthcare technology products, ensuring high-quality solutions that deliver value to our customers.
+            As Lead Designer at Invitrace, I bring over a decade of hands-on experience in UI design, combining deep technical expertise with a passion for building and leading high-performing design teams. My goal is to foster a creative, collaborative environment where designers can thrive, tackle complex challenges, and push the boundaries of innovation in healthcare technology. I drive design strategy, mentor talent, and ensure our solutions not only meet business goals but also deliver meaningful user experiences.
           </p>
           <p>
             I'm dedicated to mentoring colleagues, conducting thoughtful design reviews, and fostering knowledge-sharing to continuously elevate our collective expertise and deliver exceptional healthcare experiences.
@@ -194,7 +222,6 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
             px-4 py-2.5
             bg-[#2C2F3A]/30 
             backdrop-blur-md 
-            rounded-full 
             border border-[#3A3F4C]/30
             shadow-sm
             shadow-black/10
@@ -231,34 +258,6 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
             </span>
           </div>
 
-          {/* Canadian Visa Chip */}
-          <div className="inline-flex items-center gap-2.5
-            px-4 py-2.5
-            bg-[#2C2F3A]/30 
-            backdrop-blur-md 
-            rounded-full 
-            border border-[#3A3F4C]/30
-            shadow-sm
-            shadow-black/10
-            group
-            hover:border-[#FEC6A1]/20
-            hover:bg-[#2C2F3A]/50
-            transition-all duration-300"
-          >
-
-            <span className="text-sm font-medium text-gray-300">
-              Valid Canadian visa until end of 2026
-            </span>
-
-            {/* Optional: Small Sparkle Effect */}
-            <svg 
-              className="w-3 h-3 text-[#FEC6A1] opacity-75"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2L9.75 8.25L3.5 10.5L9.75 12.75L12 19L14.25 12.75L20.5 10.5L14.25 8.25L12 2Z" />
-            </svg>
-          </div>
         </motion.div>
 
 {/* Projects Introduction */}
@@ -276,7 +275,7 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
   className="mt-32"
 >
   {/* Wide Image with Interactive Animation */}
-  <div className="w-full h-[320px] mb-12 rounded-2xl overflow-hidden bg-[#2C2F3A]/30 backdrop-blur-md">
+  <div className="w-full h-[320px] mb-12 overflow-hidden bg-[#2C2F3A]/30 backdrop-blur-md">
     <motion.img 
       src="https://images.unsplash.com/photo-1620207418302-439b387441b0?q=80&w=2167&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
       alt="Projects Overview" 
