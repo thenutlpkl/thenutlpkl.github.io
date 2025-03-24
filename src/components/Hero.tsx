@@ -193,10 +193,7 @@ const Hero: React.FC<HeroProps> = ({ onLoadComplete }) => {
           className="text-lg text-muted-foreground leading-relaxed space-y-6"
         >
           <p>
-            As Lead Designer at Invitrace, I bring over a decade of hands-on experience in UI design, combining deep technical expertise with a passion for building and leading high-performing design teams. My goal is to foster a creative, collaborative environment where designers can thrive, tackle complex challenges, and push the boundaries of innovation in healthcare technology. I drive design strategy, mentor talent, and ensure our solutions not only meet business goals but also deliver meaningful user experiences.
-          </p>
-          <p>
-            I'm dedicated to mentoring colleagues, conducting thoughtful design reviews, and fostering knowledge-sharing to continuously elevate our collective expertise and deliver exceptional healthcare experiences.
+            With 10+ years in UX/UI, I specialize in design systems, advanced problem-solving, and emerging technologies. I've led teams in <span className="font-bold text-white">healthcare, fintech, SaaS, and AI</span>, crafting user-centric, scalable solutions. I’ve collaborated globally, including in North America, to drive innovation and impactful design.
           </p>
           {/* Development Message Chip */}
           <div className="inline-flex items-center gap-2 
